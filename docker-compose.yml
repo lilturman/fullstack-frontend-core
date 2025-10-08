@@ -1,0 +1,83 @@
+name: fullstack-infrastructure-blueprint
+
+networks:
+  leonobitech-net:
+    name: ${NETWORK_NAME:-leonobitech-net}
+    driver: bridge
+
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+
+    security_opt:
+      - no-new-privileges:true
+
+    env_file:
+      - .env
+
+    command:
+      # Dashboard y /ping (solo en 127.0.0.1:8080)
+      - --api.dashboard=true
+      - --api.insecure=false
+      - --ping=true
+      - --entrypoints.traefik.address=:8080
+
+      # Entrypoints HTTP/HTTPS
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
+      - --entrypoints.websecure.address=:443
+
+      # Docker provider
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=${NETWORK_NAME:-leonobitech-net}
+
+      # File provider (middlewares/tls en dynamic/)
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+
+      # ACME (solo se activará en PROD override con certresolver y storage montado)
+      - --certificatesresolvers.le.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.le.acme.httpchallenge=true
+      - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
+
+    ports:
+      - "80:80"
+      - "443:443"
+      - "127.0.0.1:8080:8080"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/dynamic/:/etc/traefik/dynamic:ro
+      # (sin certs ni acme.json aquí; se montan en los overrides)
+
+    networks:
+      - leonobitech-net
+
+    healthcheck:
+      test:
+        ["CMD", "traefik", "healthcheck", "--ping", "--ping.entrypoint=traefik"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 10s
+
+    labels:
+      - "traefik.enable=true"
+
+      # Router dashboard (neutral: solo TLS true; certresolver va en PROD override)
+      - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.service=api@internal"
+
+      # BasicAuth opcional desde .env
+      - "traefik.http.middlewares.auth-traefik.basicauth.users=${TRAEFIK_AUTH}"
+
+      # Middlewares desde archivos dinámicos (deben existir en traefik/dynamic/*.yml)
+      - "traefik.http.routers.traefik.middlewares=auth-traefik@docker,block-trackers@file,secure-strict@file"

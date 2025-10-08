@@ -1,0 +1,6 @@
+services:
+  traefik:
+    volumes:
+      - ./traefik/acme.json:/letsencrypt/acme.json:rw
+    labels:
+      - "traefik.http.routers.traefik.tls.certresolver=${ACME_RESOLVER:-le}"

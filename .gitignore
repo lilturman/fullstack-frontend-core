@@ -1,0 +1,26 @@
+# Env & secrets
+.env
+.env.*
+!*.example
+
+# IDEs and editors
+.idea/
+*.sublime-workspace
+.vscode/
+
+# Certificates & ACME
+traefik/certs/*
+!traefik/certs/.gitkeep
+traefik/acme.json
+
+# Logs
+logs/
+*.log
+
+# Node-related (if you later add apps)
+node_modules/
+.npmrc
+.pnpm-store/
+
+# macOS cruft
+.DS_Store

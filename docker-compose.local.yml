@@ -1,0 +1,5 @@
+services:
+  traefik:
+    volumes:
+      - ./traefik/certs:/etc/traefik/certs:ro
+    # No ACME here; TLS is provided by file via dynamic/tls.yml

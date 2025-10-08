@@ -1,0 +1,39 @@
+http:
+  middlewares:
+    # -------------------------------------------------------------------------
+    # 🛡️ Strict security headers — ideal para APIs o servicios sin frontend
+    # -------------------------------------------------------------------------
+    secure-strict:
+      headers:
+        # ——— Strict Transport Security (HSTS) ———
+        stsSeconds: 315360000 # 10 años en segundos
+        forceSTSHeader: true # Fuerza el envío del encabezado HSTS
+        stsIncludeSubdomains: true # Aplica también a subdominios
+        stsPreload: true # Permite precarga en navegadores
+        sslHost: "${FRONTEND_DOMAIN}" # 🪄 Tomado desde .env — dominio frontend principal
+
+        # ——— Seguridad general del navegador ———
+        browserXssFilter: true # Activa el filtro XSS del navegador
+        contentTypeNosniff: true # Previene interpretación incorrecta del MIME
+        frameDeny: true # Evita que el sitio sea embebido en iframes
+        referrerPolicy: "no-referrer" # No envía encabezados Referrer
+
+        # ——— Content Security Policy (CSP) ———
+        contentSecurityPolicy: >
+          default-src 'self';
+          script-src 'self';
+          style-src 'self';
+          object-src 'none';
+          frame-ancestors 'none';
+
+    # -------------------------------------------------------------------------
+    # 📵 Anti-tracking policy — opcional para páginas públicas o assets
+    # -------------------------------------------------------------------------
+    block-trackers:
+      headers:
+        customResponseHeaders:
+          X-Blocked-By: "Traefik" # Header de respuesta indicando bloqueo
+        contentSecurityPolicy: >
+          default-src 'self';
+          script-src 'self';
+          connect-src 'self';
