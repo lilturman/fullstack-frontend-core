@@ -478,11 +478,7 @@ This is just the foundation. Next steps:
 
 ## ✨ Maintained by
 
-**Leonobitech Dev Team**
-
-🌐 [https://www.leonobitech.com](https://www.leonobitech.com/)
-
-Made with 🧠, 🥷, and Docker love 🐳
+<p align="center"> <strong>🥷 Leonobitech Dev Team</strong><br> <a href="https://www.leonobitech.com" target="_blank">https://www.leonobitech.com</a><br> Made with 🧠, 🥷, and Docker love 🐳 </p>
 
 ---
 
