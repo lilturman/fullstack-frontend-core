@@ -452,6 +452,30 @@ All connected to this single, hacker-built infrastructure base.
 
 ---
 
+## 🚀 What’s Next
+
+This is just the foundation. Next steps:
+
+- 🧱 Add backend microservices under `repositories/`.
+- 🖥️ Add a Next.js frontend under `frontend/`.
+- 📦 Add a CI/CD pipeline with GitHub Actions.
+- ☁️ Move the stack to a VPS with Let’s Encrypt.
+
+---
+
+### 📊 Repository Metrics
+
+<p align="center"> <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/stargazers"> <img src="https://img.shields.io/github/stars/leonobitech/fullstack-infrastructure-blueprint?style=social" alt="GitHub stars" /> </a> <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/network/members"> <img src="https://img.shields.io/github/forks/leonobitech/fullstack-infrastructure-blueprint?style=social" alt="GitHub forks" /> </a> <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/issues"> <img src="https://img.shields.io/github/issues/leonobitech/fullstack-infrastructure-blueprint" alt="Open issues" /> </a> <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/blob/main/LICENSE"> <img src="https://img.shields.io/github/license/leonobitech/fullstack-infrastructure-blueprint" alt="License" /> </a> <img src="https://img.shields.io/github/last-commit/leonobitech/fullstack-infrastructure-blueprint" alt="Last commit" /> </p>
+
+---
+
+### 🏷️ Tags
+
+`#docker` `#traefik` `#https` `#mkcert` `#reverse-proxy`
+`#fullstack` `#infra` `#local-dev` `#devops` `#production-like`
+
+---
+
 ## ✨ Maintained by
 
 **Leonobitech Dev Team**
