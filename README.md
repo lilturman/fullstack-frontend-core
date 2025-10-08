@@ -6,11 +6,36 @@
 
 **FROM LOCALHOST TO PRODUCTION — BUILT LIKE A HACKER**
 
-![Docker](https://img.shields.io/badge/Docker-ready-blue.svg)
-![Traefik](https://img.shields.io/badge/Traefik-2.x-green.svg)
-![HTTPS](https://img.shields.io/badge/HTTPS-mkcert-orange.svg)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Status](https://img.shields.io/badge/status-stable-success.svg)
+<p align="center">
+  <!-- Repo metrics -->
+  <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/stargazers">
+    <img src="https://img.shields.io/github/stars/leonobitech/fullstack-infrastructure-blueprint?style=flat-square" alt="GitHub stars" />
+  </a>
+  <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/network/members">
+    <img src="https://img.shields.io/github/forks/leonobitech/fullstack-infrastructure-blueprint?style=flat-square" alt="GitHub forks" />
+  </a>
+  <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/issues">
+    <img src="https://img.shields.io/github/issues/leonobitech/fullstack-infrastructure-blueprint?style=flat-square" alt="Open issues" />
+  </a>
+  <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/leonobitech/fullstack-infrastructure-blueprint?style=flat-square" alt="License" />
+  </a>
+  <img src="https://img.shields.io/github/last-commit/leonobitech/fullstack-infrastructure-blueprint?style=flat-square" alt="Last commit" />
+
+  <br/>
+
+  <!-- Tech badges -->
+  <a href="https://www.docker.com/">
+    <img src="https://img.shields.io/badge/Docker-ready-blue.svg?style=flat-square" alt="Docker" />
+  </a>
+  <a href="https://traefik.io/">
+    <img src="https://img.shields.io/badge/Traefik-3.x-green.svg?style=flat-square" alt="Traefik 3.x" />
+  </a>
+  <a href="https://github.com/FiloSottile/mkcert">
+    <img src="https://img.shields.io/badge/HTTPS-mkcert-orange.svg?style=flat-square" alt="HTTPS mkcert" />
+  </a>
+  <img src="https://img.shields.io/badge/status-stable-success.svg?style=flat-square" alt="Status: stable" />
+</p>
 
 > 🧠 Leonobitech Hacker Stack is not a “hello world.” It’s a production-grade local infrastructure forged for real-world AI platforms, microservices, and automation backends — but deployable on your laptop.
 >
@@ -463,16 +488,9 @@ This is just the foundation. Next steps:
 
 ---
 
-### 📊 Repository Metrics
+## 📜 License
 
-<p align="center"> <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/stargazers"> <img src="https://img.shields.io/github/stars/leonobitech/fullstack-infrastructure-blueprint?style=social" alt="GitHub stars" /> </a> <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/network/members"> <img src="https://img.shields.io/github/forks/leonobitech/fullstack-infrastructure-blueprint?style=social" alt="GitHub forks" /> </a> <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/issues"> <img src="https://img.shields.io/github/issues/leonobitech/fullstack-infrastructure-blueprint" alt="Open issues" /> </a> <a href="https://github.com/leonobitech/fullstack-infrastructure-blueprint/blob/main/LICENSE"> <img src="https://img.shields.io/github/license/leonobitech/fullstack-infrastructure-blueprint" alt="License" /> </a> <img src="https://img.shields.io/github/last-commit/leonobitech/fullstack-infrastructure-blueprint" alt="Last commit" /> </p>
-
----
-
-### 🏷️ Tags
-
-`#docker` `#traefik` `#https` `#mkcert` `#reverse-proxy`
-`#fullstack` `#infra` `#local-dev` `#devops` `#production-like`
+MIT © 2025 — Felix Figueroa @ Leonobitech
 
 ---
 
@@ -482,9 +500,10 @@ This is just the foundation. Next steps:
 
 ---
 
-## 📜 License
+### 🏷️ Tags
 
-MIT © 2025 — Felix Figueroa @ Leonobitech
+`#docker` `#traefik` `#https` `#mkcert` `#reverse-proxy`
+`#fullstack` `#infra` `#local-dev` `#devops` `#production-like`
 
 ---
 
