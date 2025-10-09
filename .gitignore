@@ -19,6 +19,7 @@ logs/
 
 # Node-related (if you later add apps)
 node_modules/
+dist/
 .npmrc
 .pnpm-store/
 

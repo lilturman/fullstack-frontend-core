@@ -419,4 +419,10 @@ MIT © 2025 — Felix Figueroa @ Leonobitech
 
 ---
 
+### 🏷️ Tags
+
+`backend`, `nodejs`, `typescript`, `esm`, `express`, `hexagonal-architecture`, `ports-and-adapters`, `clean-architecture`, `ddd`, `rest-api`, `cors`, `logging`, `pino`, `dotenv`, `tsx`, `pkgroll`, `scalable`, `production-ready`
+
+---
+
 🔥 **This isn’t just an environment. It’s your sandbox, your testing ground, your launchpad. Clone it, break it, build on it — and ship like a hacker.**
