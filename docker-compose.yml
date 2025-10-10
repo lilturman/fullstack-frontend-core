@@ -81,3 +81,64 @@ services:
 
       # Middlewares desde archivos dinámicos (deben existir en traefik/dynamic/*.yml)
       - "traefik.http.routers.traefik.middlewares=auth-traefik@docker,block-trackers@file,secure-strict@file"
+
+  core:
+    build:
+      context: ./repositories/core
+      dockerfile: Dockerfile
+    image: core:v1.0.0
+    container_name: core
+    restart: unless-stopped
+
+    read_only: true
+    tmpfs:
+      - /tmp
+
+    security_opt:
+      - no-new-privileges:true
+
+    env_file:
+      - ./repositories/core/.env
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${PORT:-8000}
+
+    # Expose only to the mesh; Traefik will route inbound traffic.
+    # If you also want to hit it directly (http://localhost:8000), uncomment ports:
+    # ports:
+    #   - "8000:8000"
+
+    volumes:
+      - ./repositories/core/keys:/app/keys:ro
+
+    networks:
+      - leonobitech-net
+
+    depends_on:
+      traefik:
+        condition: service_started
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS http://localhost:${PORT:-8000}/health || exit 1",
+        ]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+    labels:
+      - "traefik.enable=true"
+
+      # Route: https://api.localhost (or your BACKEND_DOMAIN)
+      - "traefik.http.routers.core.rule=Host(`${BACKEND_DOMAIN}`)"
+      - "traefik.http.routers.core.entrypoints=websecure"
+      - "traefik.http.routers.core.tls=true"
+
+      # Middlewares defined in traefik/dynamic (optional; keep or remove as you like)
+      - "traefik.http.routers.core.middlewares=block-trackers@file,secure-strict@file"
+
+      # Tell Traefik which internal port to hit
+      - "traefik.http.services.core.loadbalancer.server.port=${PORT:-8000}"

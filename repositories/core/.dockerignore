@@ -1,0 +1,43 @@
+# ─────────────────────────────
+# Ignorar archivos sensibles
+# ─────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+*.crt
+# ─────────────────────────────
+# Ignorar archivos de configuración de Docker
+# ─────────────────────────────
+Dockerfile
+docker-compose.yml
+# ─────────────────────────────
+# Archivos de construcción
+# ─────────────────────────────
+node_modules
+dist
+*.tsbuildinfo
+coverage/
+*.log
+npm-debug.log*
+assets
+
+# ─────────────────────────────
+# Archivos de tests o solo desarrollo
+# ─────────────────────────────
+*.test.ts
+__tests__/
+.vscode/
+.git
+.gitignore
+.idea/
+# ─────────────────────────────
+# Bases de datos locales
+# ─────────────────────────────
+*.sqlite
+*.db
+
+# ─────────────────────────────
+# Prisma (si usás SQLite local)
+# ─────────────────────────────
+prisma/dev.db

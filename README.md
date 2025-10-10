@@ -146,6 +146,7 @@ Your `package.json` will have something like:
 - **Node** ≥ 22.20.0 (LTS)
 - **npm** ≥ 11
 - Optional local hosts entries:
+
   ```bash
   127.0.0.1  traefik.localhost app.localhost api.localhost
 
@@ -350,7 +351,7 @@ echo "✅ Structure created. Copy .env.example to .env and adjust values."
 
 ---
 
-## 🚀 Usage
+## 🚀 Usage (run this command in the root of the core repository)
 
 ```bash
 # Development (watch + pretty logs)
@@ -416,6 +417,12 @@ MIT © 2025 — Felix Figueroa @ Leonobitech
 ## ✨ Maintained by
 
 <p align="center"><strong>🥷 Leonobitech Dev Team</strong><br/> <a href="https://www.leonobitech.com" target="_blank">https://www.leonobitech.com</a><br/> Made with 🧠, 🥷, and Docker love 🐳</p>
+
+---
+
+### 🏷️ Tags
+
+`backend`, `nodejs`, `typescript`, `esm`, `express`, `hexagonal-architecture`, `ports-and-adapters`, `clean-architecture`, `ddd`, `rest-api`, `cors`, `logging`, `pino`, `dotenv`, `tsx`, `pkgroll`, `scalable`, `production-ready`
 
 ---
 
