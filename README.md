@@ -1,8 +1,11 @@
 # fullstack-backend-core
 
-<p align="center"> <img src="./assets/banner.png" alt="Fullstack Backend Core — Leonobitech" width="100%" /> </p>
+<p align="center">
+  <img src="./assets/banner.png" alt="Fullstack Backend Core — Leonobitech" width="100%" />
+</p>
 
-Core API in **Node 22 + TypeScript (ESM)** with **hexagonal architecture**. Uses **`tsx`** (watch) for dev and **`pkgroll`** (ESM bundle) for build. **Pretty logs in dev**, **structured JSON in prod** via **pino**.
+Core API in **Node 22 + TypeScript (ESM)** with **hexagonal architecture**. Dev uses **`tsx`** (watch); build uses **`pkgroll`** (ESM bundle). **Pretty logs in dev**, **structured JSON in prod** with **pino**.  
+**Goal:** deliver a small **hello world core** wired to the existing **Traefik** infra.
 
 **FROM LOCALHOST TO PRODUCTION — BUILT LIKE A HACKER**
 
@@ -10,15 +13,24 @@ Core API in **Node 22 + TypeScript (ESM)** with **hexagonal architecture**. U
 
 ---
 
-## Bootstrap
+## 0) Prerequisites
+
+- **Node** ≥ 22.20.0 (LTS) & **npm** ≥ 11
+- Optional local hosts entries (cookie/CORS isolation):
+  ```bash
+  127.0.0.1  traefik.localhost app.localhost api.localhost
+  ```
+
+---
+
+## 1) Bootstrap
 
 ```bash
 mkdir fullstack-backend-core && cd fullstack-backend-core
 npm init -y
-
 ```
 
-## `package.json` (ESM + scripts)
+### `package.json` (ESM + scripts)
 
 ```json
 {
@@ -41,12 +53,11 @@ npm init -y
 }
 ```
 
-## Install dependencies
+### Install dependencies
 
 ```bash
 npm i express cors cookie-parser zod dotenv pino pino-http
 npm i -D typescript tsx pkgroll pino-pretty @types/node @types/express @types/cors @types/cookie-parser
-
 ```
 
 Your `package.json` will have something like:
@@ -84,10 +95,10 @@ Your `package.json` will have something like:
 
 ---
 
-## `tsconfig.json` (ESM + `@` aliases + global types)
+### `tsconfig.json` (ESM + `@` aliases + global types)
 
 ```json
-{
+{{
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -115,6 +126,7 @@ Your `package.json` will have something like:
     "strict": true,
     "skipLibCheck": true,
 
+    /* Tipos globales (opcional pero recomendado) */
     "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["src", "types"],
@@ -138,19 +150,6 @@ Your `package.json` will have something like:
 - **Hexagonal**: domain decoupled from infra.
 - **Logging**: pino + pino-http (pretty in dev, JSON in prod).
 - **CORS** via `.env` with local domains separation.
-
----
-
-## 📦 Requirements
-
-- **Node** ≥ 22.20.0 (LTS)
-- **npm** ≥ 11
-- Optional local hosts entries:
-
-  ```bash
-  127.0.0.1  traefik.localhost app.localhost api.localhost
-
-  ```
 
 ---
 
@@ -181,7 +180,7 @@ fullstack-backend-core/
 
 ## ⚙️ Quick setup
 
-### Create everything in seconds
+Create everything fast (structure, base files, `.env.example`).
 
 ```bash
 # Create structure + base files + .env.example
@@ -346,8 +345,9 @@ declare namespace NodeJS {
 TS
 
 echo "✅ Structure created. Copy .env.example to .env and adjust values."
-
 ```
+
+> Copy `.env.example` to `.env` and adjust values.
 
 ---
 
@@ -365,14 +365,12 @@ npm start
 
 ```
 
-Health check:
+## Health check:
 
 ```bash
 curl -i http://api.localhost:8000/health
 
 ```
-
----
 
 ## 🧱 Design rationale (short)
 
@@ -408,7 +406,398 @@ Add `/ready` (readiness) and `notFound`/`errorHandler` when you start adding
 
 ---
 
-## 📜 License
+### Nice! Since the baseline runs, we gonna do **hardening HTTP + observability.**
+
+- **Harden HTTP + cleaner logs (quick win):**
+  - `notFound` + `errorHandler`
+  - request id in every log
+  - `/ready` endpoint
+  - hide Express header
+
+**Install (nothing new):** you already have what we need.
+
+**Update `src/infra/http/server.ts`:**
+
+### `src/shared/logger.ts`
+
+```ts
+// add near the other imports
+import { randomUUID } from "node:crypto";
+
+// ...inside buildServer(), after app.use(express.json())
+app.disable("x-powered-by");
+
+// request id + logging (keeps your previous options)
+app.use(
+  pinoHttp({
+    logger,
+    genReqId: () => randomUUID(),
+    redact: { paths: ["req.headers.cookie"], censor: "[redacted]" },
+    autoLogging: {
+      ignore: (req) =>
+        new Set([
+          "/favicon.ico",
+          "/apple-touch-icon.png",
+          "/apple-touch-icon-precomposed.png",
+        ]).has(req.url ?? req.originalUrl ?? ""),
+    },
+    serializers: {
+      req: (req) => ({ id: (req as any).id, method: req.method, url: req.url }),
+      res: (res) => ({ statusCode: res.statusCode }),
+    },
+  })
+);
+
+// health (already)
+app.get("/health", (_req, res) =>
+  res.json({ ok: true, service: env.SERVICE_NAME })
+);
+
+// readiness (expand later to check DB/cache/etc)
+app.get("/ready", (_req, res) => res.json({ ready: true }));
+
+// 404
+app.use((_req, res) => res.status(404).json({ error: "Not Found" }));
+
+// error handler
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use(
+  (
+    err: unknown,
+    _req: express.Request,
+    res: express.Response,
+    _next: express.NextFunction
+  ) => {
+    logger.error({ err }, "Unhandled error");
+    res.status(500).json({ error: "Internal Error" });
+  }
+);
+```
+
+### `src/infra/http/server.ts` (with /health, /ready, 404, error handler)
+
+```ts
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import pinoHttp from "pino-http";
+import { env, getCorsOrigin } from "@config/env";
+import logger from "@shared/logger";
+
+const IGNORE = new Set<string>([
+  "/favicon.ico",
+  "/apple-touch-icon.png",
+  "/apple-touch-icon-precomposed.png",
+]);
+
+export function buildServer() {
+  const app = express();
+
+  app.disable("x-powered-by");
+  app.use(cors({ origin: getCorsOrigin(), credentials: true }));
+  app.use(cookieParser());
+  app.use(express.json());
+
+  app.use(
+    pinoHttp({
+      logger,
+      redact: { paths: ["req.headers.cookie"], censor: "[redacted]" },
+      autoLogging: {
+        ignore: (req) => IGNORE.has(req.url ?? req.originalUrl ?? ""),
+      },
+      serializers: {
+        req: (req) => ({ method: req.method, url: req.url }),
+        res: (res) => ({ statusCode: res.statusCode }),
+      },
+    })
+  );
+
+  // Health & Readiness
+  app.get("/health", (_req, res) =>
+    res.json({ ok: true, service: env.SERVICE_NAME })
+  );
+  app.get("/ready", (_req, res) => res.json({ ready: true }));
+
+  // 404 (after routes)
+  app.use((_req, res) => res.status(404).json({ error: "Not Found" }));
+
+  // Error handler (last)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  app.use(
+    (
+      err: unknown,
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction
+    ) => {
+      logger.error({ err }, "Unhandled error");
+      res.status(500).json({ error: "Internal Error" });
+    }
+  );
+
+  return app;
+}
+
+export async function start() {
+  const app = buildServer();
+  app.listen(env.PORT, () =>
+    logger.info({ port: env.PORT, host: env.BACKEND_DOMAIN }, "HTTP server up")
+  );
+}
+```
+
+---
+
+## Run locally and check endpoints
+
+```bash
+npm run dev     # watch + pretty logs
+# in another shell
+curl -i http://localhost:8000/health
+curl -i http://localhost:8000/ready
+curl -i http://localhost:8000/not-exists
+```
+
+---
+
+## Containerization
+
+### Dockerfile (multi-stage)
+
+```dockerfile
+# Build stage
+# 🔧 Build stage
+FROM node:22-slim AS builder
+
+WORKDIR /app
+
+# 1) Install deps with best cache usage
+COPY package*.json ./
+RUN npm ci
+
+# 2) Copy only what we need to build
+COPY tsconfig.json ./
+COPY src ./src
+COPY types ./types
+
+# 3) Build to ESM bundle (dist/)
+RUN npm run build
+
+# 4) Prune dev deps for runtime
+RUN npm prune --omit=dev
+
+# 🛡️ Runtime stage
+FROM node:22-slim AS production
+WORKDIR /app
+
+# (optional) Install curl for container healthchecks
+RUN apt-get update -y && apt-get install -y --no-install-recommends curl \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# 5) Copy runtime artifacts
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+
+ENV NODE_ENV=production
+ENV PORT=8000
+# Useful for stack traces if you later enable source maps
+ENV NODE_OPTIONS=--enable-source-maps
+
+EXPOSE 8000
+
+# (optional) basic container-level healthcheck (works because we installed curl)
+HEALTHCHECK --interval=15s --timeout=3s --retries=3 \
+  CMD curl -fsS http://localhost:${PORT}/health || exit 1
+
+CMD ["node", "dist/index.mjs"]
+```
+
+### .dockerignore
+
+```
+# ─────────────────────────────
+# Ignorar archivos sensibles
+# ─────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+*.crt
+# ─────────────────────────────
+# Ignorar archivos de configuración de Docker
+# ─────────────────────────────
+Dockerfile
+docker-compose.yml
+# ─────────────────────────────
+# Archivos de construcción
+# ─────────────────────────────
+node_modules
+dist
+*.tsbuildinfo
+coverage/
+*.log
+npm-debug.log*
+assets
+
+# ─────────────────────────────
+# Archivos de tests o solo desarrollo
+# ─────────────────────────────
+*.test.ts
+__tests__/
+.vscode/
+.git
+.gitignore
+.idea/
+# ─────────────────────────────
+# Bases de datos locales
+# ─────────────────────────────
+*.sqlite
+*.db
+
+# ─────────────────────────────
+# Prisma (si usás SQLite local)
+# ─────────────────────────────
+prisma/dev.db
+```
+
+### Build & run (optional, without Traefik):
+
+```bash
+docker build -t core:v1.0.0 .
+docker run --rm -p 8000:8000 --env-file .env --name core core:v1.0.0
+```
+
+---
+
+## Compose + Traefik
+
+Drop this service below your existing `traefik` in the **same** `docker-compose.yml` (network `leonobitech-net`).
+
+```yaml
+services:
+  core:
+    build:
+      context: ./repositories/core
+      dockerfile: Dockerfile
+    image: core:v1.0.0
+    container_name: core
+    restart: unless-stopped
+
+    read_only: true
+    tmpfs:
+      - /tmp
+
+    security_opt:
+      - no-new-privileges:true
+
+    env_file:
+      - ./repositories/core/.env
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${PORT:-8000}
+
+    # Expose only to the mesh; Traefik will route inbound traffic.
+    # If you also want to hit it directly (http://localhost:8000), uncomment ports:
+    # ports:
+    #   - "8000:8000"
+
+    volumes:
+      - ./repositories/core/keys:/app/keys:ro
+
+    networks:
+      - leonobitech-net
+
+    depends_on:
+      traefik:
+        condition: service_started
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS http://localhost:${PORT:-8000}/health || exit 1",
+        ]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+    labels:
+      - "traefik.enable=true"
+
+      # Route: https://api.localhost (or your BACKEND_DOMAIN)
+      - "traefik.http.routers.core.rule=Host(`${BACKEND_DOMAIN}`)"
+      - "traefik.http.routers.core.entrypoints=websecure"
+      - "traefik.http.routers.core.tls=true"
+
+      # Middlewares defined in traefik/dynamic (optional; keep or remove as you like)
+      - "traefik.http.routers.core.middlewares=block-trackers@file,secure-strict@file"
+
+      # Tell Traefik which internal port to hit
+      - "traefik.http.services.core.loadbalancer.server.port=${PORT:-8000}"
+```
+
+### Build & run (optional, without Traefik):
+
+```bash
+docke compose up -d traefik core
+
+# check status stack:
+docker ps
+
+# Check logs inside core contaiiner
+docke logs -f core
+```
+
+Verify:
+
+```bash
+# Through Traefik (TLS; -k for self-signed)
+curl -k --resolve api.localhost:443:127.0.0.1 https://api.localhost/health
+curl -k --resolve api.localhost:443:127.0.0.1 https://api.localhost/ready
+
+# Or plain HTTP if you also add an HTTP router on entrypoint web:
+# curl http://api.localhost/health
+```
+
+Expected:
+
+```json
+/health -> {"ok":true,"service":"core"}
+/ready  -> {"ready":true}
+```
+
+---
+
+## Commit
+
+Recommended Conventional Commit:
+
+```
+feat(http): add readiness, 404 and error handler; refine health; wire container
+
+- Routes:
+  - /health (kept; clean headers/log)
+  - /ready (new; simple true for now)
+  - 404 (catch-all JSON)
+  - error handler (centralized logging)
+
+- Docker:
+  - built image core:v1.0.0
+  - container `core` on `leonobitech-net` with Traefik
+  - healthcheck on /health
+```
+
+---
+
+## Tags (topics)
+
+`backend`, `nodejs`, `typescript`, `esm`, `express`, `hexagonal-architecture`, `ports-and-adapters`, `clean-architecture`, `ddd`, `rest-api`, `cors`, `logging`, `pino`, `dotenv`, `tsx`, `pkgroll`, `scalable`, `production-ready`
+
+---
+
+## License
 
 MIT © 2025 — Felix Figueroa @ Leonobitech
 
@@ -417,12 +806,6 @@ MIT © 2025 — Felix Figueroa @ Leonobitech
 ## ✨ Maintained by
 
 <p align="center"><strong>🥷 Leonobitech Dev Team</strong><br/> <a href="https://www.leonobitech.com" target="_blank">https://www.leonobitech.com</a><br/> Made with 🧠, 🥷, and Docker love 🐳</p>
-
----
-
-### 🏷️ Tags
-
-`backend`, `nodejs`, `typescript`, `esm`, `express`, `hexagonal-architecture`, `ports-and-adapters`, `clean-architecture`, `ddd`, `rest-api`, `cors`, `logging`, `pino`, `dotenv`, `tsx`, `pkgroll`, `scalable`, `production-ready`
 
 ---
 
