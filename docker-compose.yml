@@ -142,3 +142,45 @@ services:
 
       # Tell Traefik which internal port to hit
       - "traefik.http.services.core.loadbalancer.server.port=${PORT:-8000}"
+
+  frontend:
+    build:
+      context: ./repositories/frontend
+      dockerfile: Dockerfile
+    image: frontend:v1.0.0
+    container_name: frontend
+
+    restart: unless-stopped
+
+    environment:
+      - NODE_ENV=production
+
+    networks:
+      - leonobitech-net
+
+    depends_on:
+      traefik:
+        condition: service_started
+
+    # 🔍 Healthcheck: verifica que la raíz responda con 2xx
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS http://localhost:3000/healthz >/dev/null || exit 1",
+        ]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router: https://app.localhost
+      - "traefik.http.routers.frontend.rule=Host(`${FRONTEND_DOMAIN}`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls=true"
+      # Forward to container port 3000
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+      # Optionally attach middlewares defined under traefik/dynamic
+      # - "traefik.http.routers.frontend.middlewares=secure-strict@file"
