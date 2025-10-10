@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/banner.png" alt="Full-Stack Infrastructure — Leonobitech" width="100%">
+  <img src="../assets/banner-000.png" alt="Full-Stack Infrastructure — Leonobitech" width="100%">
 </p>
 
 # 🥷 Full-Stack Infrastructure Blueprint

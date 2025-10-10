@@ -1,6 +1,6 @@
 # fullstack-frontend-core
 
-<p align="center"> <img src="./assets/banner.png" alt="Fullstack Frontend Core — Leonobitech" width="100%" /> </p>
+<p align="center"> <img src="./assets/banner-002.png" alt="Fullstack Frontend Core — Leonobitech" width="100%" /> </p>
 
 Frontend foundation built with **Next.js 15 + TypeScript (ESM)** — containerized and ready to connect with the existing **Traefik infrastructure**.
 

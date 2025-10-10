@@ -1,7 +1,7 @@
 # fullstack-backend-core
 
 <p align="center">
-  <img src="./assets/banner.png" alt="Fullstack Backend Core — Leonobitech" width="100%" />
+  <img src="../assets/banner-001.png" alt="Fullstack Backend Core — Leonobitech" width="100%" />
 </p>
 
 Core API in **Node 22 + TypeScript (ESM)** with **hexagonal architecture**. Dev uses **`tsx`** (watch); build uses **`pkgroll`** (ESM bundle). **Pretty logs in dev**, **structured JSON in prod** with **pino**.  
