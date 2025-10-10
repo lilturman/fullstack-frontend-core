@@ -13,7 +13,7 @@ Core API in **Node 22 + TypeScript (ESM)** with **hexagonal architecture**. Dev 
 
 ---
 
-## 0) Prerequisites
+## Prerequisites
 
 - **Node** ≥ 22.20.0 (LTS) & **npm** ≥ 11
 - Optional local hosts entries (cookie/CORS isolation):
@@ -23,7 +23,7 @@ Core API in **Node 22 + TypeScript (ESM)** with **hexagonal architecture**. Dev 
 
 ---
 
-## 1) Bootstrap
+## Bootstrap
 
 ```bash
 mkdir fullstack-backend-core && cd fullstack-backend-core
@@ -98,7 +98,7 @@ Your `package.json` will have something like:
 ### `tsconfig.json` (ESM + `@` aliases + global types)
 
 ```json
-{{
+{
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
